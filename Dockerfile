@@ -11,17 +11,14 @@ RUN apt-get install -y \
     libonig-dev \
     libxml2-dev \
     zip \
-    unzip \
-    default-mysql-server \
-    default-mysql-client \
-    supervisor
+    unzip
 
 # Instalar Node.js 18 LTS
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
-# Instalar extensiones PHP
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+# Instalar extensiones PHP para MySQL y SQLite
+RUN docker-php-ext-install pdo_mysql pdo_sqlite mbstring exif pcntl bcmath gd
 
 # Habilitar módulos Apache
 RUN a2enmod rewrite
@@ -34,11 +31,6 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Configurar Apache para SPA + API
 COPY docker/apache-spa.conf /etc/apache2/sites-available/000-default.conf
-
-# Crear directorios necesarios para MySQL
-RUN mkdir -p /var/run/mysqld /var/log/mysql \
-    && chown mysql:mysql /var/run/mysqld /var/log/mysql \
-    && chmod 777 /var/run/mysqld
 
 # Establecer directorio de trabajo
 WORKDIR /var/www/html
