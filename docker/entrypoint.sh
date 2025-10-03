@@ -12,7 +12,11 @@ if [ -z "$APP_KEY" ]; then
     php artisan key:generate --force
 fi
 
-# Limpiar configuraciones pero NO cache (las tablas no existen aún)
+# Configurar cache temporal para evitar errores de tabla no encontrada
+export CACHE_STORE=file
+export SESSION_DRIVER=file
+
+# Limpiar configuraciones
 php artisan config:clear
 php artisan route:clear
 php artisan view:clear
@@ -24,9 +28,14 @@ php artisan migrate --force
 echo "🌱 Ejecutando seeders..."
 php artisan db:seed --force
 
-# 3. AHORA SÍ LIMPIAR CACHE (las tablas ya existen)
-echo "🧹 Limpiando cache ahora que las tablas existen..."
-php artisan cache:clear
+# 3. RESTAURAR CONFIGURACIÓN DE PRODUCCIÓN
+echo "⚙️  Restaurando configuración de cache de producción..."
+# Solo si las variables están configuradas para usar database cache
+if [ "$CACHE_STORE" = "database" ]; then
+    echo "🗄️  Configurando cache de base de datos..."
+    # Ahora sí podemos usar cache de base de datos porque las tablas existen
+    php artisan cache:clear
+fi
 
 # 4. OPTIMIZAR LARAVEL PARA PRODUCCIÓN
 echo "🚀 Optimizando Laravel para producción..."
