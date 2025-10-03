@@ -1,30 +1,34 @@
+# Imagen base PHP 8.2 con Apache
 FROM php:8.2-apache
 
-# Actualizar repositorios e instalar dependencias básicas
-RUN apt-get update -y
-
-# Instalar dependencias del sistema
-RUN apt-get install -y \
+# Instalar dependencias del sistema necesarias para compilar extensiones PHP
+RUN apt-get update && apt-get install -y \
     git \
     curl \
     libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
     libonig-dev \
     libxml2-dev \
+    libzip-dev \
+    libsqlite3-dev \
+    pkg-config \
     zip \
-    unzip
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Configurar GD con soporte para JPEG y FreeType
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
 # Instalar Node.js 18 LTS
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs
 
 # Instalar extensiones PHP para MySQL y SQLite
-RUN docker-php-ext-install pdo_mysql pdo_sqlite mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install pdo_mysql pdo_sqlite mbstring exif pcntl bcmath gd zip
 
 # Habilitar módulos Apache
 RUN a2enmod rewrite
-
-# Limpiar cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
