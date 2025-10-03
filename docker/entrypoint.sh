@@ -12,9 +12,8 @@ if [ -z "$APP_KEY" ]; then
     php artisan key:generate --force
 fi
 
-# Limpiar cache Laravel
+# Limpiar configuraciones pero NO cache (las tablas no existen aún)
 php artisan config:clear
-php artisan cache:clear
 php artisan route:clear
 php artisan view:clear
 
@@ -25,7 +24,11 @@ php artisan migrate --force
 echo "🌱 Ejecutando seeders..."
 php artisan db:seed --force
 
-# 3. OPTIMIZAR LARAVEL PARA PRODUCCIÓN
+# 3. AHORA SÍ LIMPIAR CACHE (las tablas ya existen)
+echo "🧹 Limpiando cache ahora que las tablas existen..."
+php artisan cache:clear
+
+# 4. OPTIMIZAR LARAVEL PARA PRODUCCIÓN
 echo "🚀 Optimizando Laravel para producción..."
 php artisan config:cache
 php artisan route:cache
