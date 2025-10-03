@@ -1,0 +1,67 @@
+# Laravel
+/vendor/
+/node_modules/
+/public/hot
+/public/storage
+/storage/*.key
+/storage/logs/*
+!/storage/logs/.gitkeep
+/.phpunit.cache
+/bootstrap/cache/*
+!/bootstrap/cache/.gitkeep
+
+# Environment files
+.env
+.env.backup
+.env.production
+.env.local
+.env.testing
+
+# IDE files
+/.fleet
+/.idea
+/.vscode
+.DS_Store
+Thumbs.db
+
+# Build files
+/public/build/
+/public/mix-manifest.json
+
+# Testing
+.phpunit.result.cache
+/coverage/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules/
+vendor/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Deployment files
+auth.json
+Homestead.json
+Homestead.yaml
+
+# Docker (if using external docker-compose)
+docker-compose.override.yml
+
+# Database
+*.sqlite
+*.sqlite3
+database.sqlite
