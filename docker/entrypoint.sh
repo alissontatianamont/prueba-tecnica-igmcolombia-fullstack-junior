@@ -3,18 +3,20 @@ set -e
 
 echo "🚀 === INICIANDO DEPLOY LARAVEL API + VUE SPA + MYSQL ==="
 
-# 1. CONFIGURAR MYSQL
-echo "📦 Configurando MySQL 8..."
+# 1. INICIALIZAR MYSQL
+echo "📦 Iniciando MySQL..."
 service mysql start
+sleep 5
 
-# Configurar MySQL root sin password para container
-mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';"
-mysql -u root -e "FLUSH PRIVILEGES;"
+# Configurar MySQL sin password para desarrollo
+echo "⚙️  Configurando MySQL..."
+mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';" || true
+mysql -u root -e "FLUSH PRIVILEGES;" || true
 
 # Crear base de datos y usuario para Laravel
-mysql -u root -e "CREATE DATABASE IF NOT EXISTS igm_facturacion_db;"
-mysql -u root -e "CREATE USER IF NOT EXISTS 'laravel_user'@'%' IDENTIFIED BY 'laravel_pass_2024';"
-mysql -u root -e "GRANT ALL PRIVILEGES ON igm_facturacion_db.* TO 'laravel_user'@'%';"
+mysql -u root -e "CREATE DATABASE IF NOT EXISTS igm_facturacion_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+mysql -u root -e "CREATE USER IF NOT EXISTS 'laravel_user'@'localhost' IDENTIFIED BY 'laravel_pass_2024';"
+mysql -u root -e "GRANT ALL PRIVILEGES ON igm_facturacion_db.* TO 'laravel_user'@'localhost';"
 mysql -u root -e "FLUSH PRIVILEGES;"
 
 echo "✅ MySQL configurado correctamente"
