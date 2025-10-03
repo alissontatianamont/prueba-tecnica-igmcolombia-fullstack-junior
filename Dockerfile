@@ -28,7 +28,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 RUN docker-php-ext-install pdo_mysql pdo_sqlite mbstring exif pcntl bcmath gd zip
 
 # Habilitar módulos Apache
-RUN a2enmod rewrite
+RUN a2enmod rewrite headers
 
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
