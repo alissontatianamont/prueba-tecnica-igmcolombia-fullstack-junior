@@ -24,6 +24,9 @@ fi
 # Configurar cache temporal para evitar errores de tabla no encontrada
 export CACHE_STORE=file
 export SESSION_DRIVER=file
+# HABILITAR DEBUG TEMPORAL PARA VER ERRORES
+export APP_DEBUG=true
+export LOG_LEVEL=debug
 
 # Limpiar configuraciones
 php artisan config:clear
