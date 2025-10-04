@@ -164,7 +164,7 @@
           <h3 class="text-lg font-medium text-gray-900">Usuario desactivado</h3>
         </div>
         <p class="text-sm text-gray-500 mb-6">
-          Este usuario tiene facturas creadas y no puede ser eliminado. Ha sido desactivado en su lugar.
+          Este usuario no puede ser eliminado, tiene facturas enlazadas.
         </p>
         <div class="flex justify-end">
           <button
@@ -232,15 +232,9 @@ export default {
           showDeleteModal.value = false;
           userToDelete.value = null;
         } else {
-          // Verificar si es el error específico de usuario con facturas
-          if (result.errors && result.errors.general && 
-              result.errors.general[0] && 
-              result.errors.general[0].includes('deactivated instead of deleted')) {
-            showDeleteModal.value = false;
-            showErrorModal.value = true;
-            // Refrescar la lista para mostrar el usuario desactivado
-            fetchUsers();
-          }
+          showDeleteModal.value = false;
+          showErrorModal.value = true;
+          fetchUsers();
         }
       }
     };

@@ -269,7 +269,7 @@
           <h3 class="text-lg font-medium text-gray-900">Cliente desactivado</h3>
         </div>
         <p class="text-sm text-gray-500 mb-6">
-          Este cliente tiene facturas relacionadas y no puede ser eliminado. Ha sido desactivado en su lugar.
+          Este cliente no puede ser eliminado, tiene facturas enlazadas.
         </p>
         <div class="flex justify-end">
           <button
@@ -360,15 +360,9 @@ export default {
           clientToDelete.value = null;
           loadClients();
         } else {
-          // Verificar si es el error específico de cliente con facturas
-          if (result.errors && result.errors.general && 
-              result.errors.general[0] && 
-              result.errors.general[0].includes('deactivated instead of deleted')) {
-            showDeleteModal.value = false;
-            showErrorModal.value = true;
-            // Refrescar la lista para mostrar el cliente desactivado
-            loadClients();
-          }
+          showDeleteModal.value = false;
+          showErrorModal.value = true;
+          loadClients();
         }
       }
     };
