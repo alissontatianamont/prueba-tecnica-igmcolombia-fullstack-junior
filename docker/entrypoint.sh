@@ -1,7 +1,16 @@
 #!/bin/bash
 set -e
 
-echo "🚀 === INICIANDO DEPLOY LARAVEL API + VUE SPA + MYSQL EXTERNO ==="
+echo "🚀 === INICIA# 5. OPTIMIZAR LARAVEL PARA PRODUCCIÓN
+echo "🚀 Optimizando Laravel para producción..."
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# Crear enlace simbólico para storage
+if [ ! -L "public/storage" ]; then
+    php artisan storage:link
+fiOY LARAVEL API + VUE SPA + MYSQL EXTERNO ==="
 
 # 1. CONFIGURAR LARAVEL API
 echo "⚙️  Configurando Laravel API con MySQL externo..."
@@ -50,8 +59,17 @@ php artisan storage:link
 echo "🎨 Verificando compilación de Vue.js SPA..."
 if [ ! -d "public/build" ]; then
     echo "❌ Error: Vue.js no está compilado. Ejecutando npm run build..."
-    npm run build
+    npm run build:production
 fi
+
+# Verificar que el manifest existe
+if [ ! -f "public/build/manifest.json" ]; then
+    echo "❌ Error: Manifest no encontrado. Recompilando..."
+    npm run build:production
+fi
+
+# Configurar Laravel para usar archivos de build en producción
+export APP_ENV=production
 
 echo "✅ Frontend Vue.js SPA listo"
 
