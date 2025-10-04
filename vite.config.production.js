@@ -1,3 +1,4 @@
+// Configuración de build para producción en Render
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
@@ -16,15 +17,12 @@ export default defineConfig({
   build: {
     manifest: true,
     outDir: 'public/build',
+    assetsDir: 'assets',
     rollupOptions: {
-      input: {
-        app: 'resources/js/app.js',
-        css: 'resources/css/app.css'
-      }
-    }
+      output: {
+        manualChunks: undefined,
+      },
+    },
   },
-  server: {
-    https: false,
-    host: '0.0.0.0'
-  }
+  base: '/',
 });
