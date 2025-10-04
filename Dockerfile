@@ -46,7 +46,9 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Instalar dependencias de Node.js y compilar Vue.js SPA
-RUN npm ci && npm run build:production
+RUN npm ci 
+RUN npm run build
+RUN ls -la public/build/
 
 # Configurar permisos Laravel
 RUN chown -R www-data:www-data /var/www/html \

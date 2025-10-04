@@ -13,18 +13,4 @@ export default defineConfig({
   resolve: {
     alias: { '@': '/resources/js' },
   },
-  build: {
-    manifest: true,
-    outDir: 'public/build',
-    rollupOptions: {
-      input: {
-        app: 'resources/js/app.js',
-        css: 'resources/css/app.css'
-      }
-    }
-  },
-  server: {
-    https: false,
-    host: '0.0.0.0'
-  }
 });

@@ -60,19 +60,19 @@ php artisan storage:link
 
 # 4. VERIFICAR QUE VUE.js SPA ESTÉ COMPILADO
 echo "🎨 Verificando compilación de Vue.js SPA..."
-if [ ! -d "public/build" ]; then
-    echo "❌ Error: Vue.js no está compilado. Ejecutando npm run build..."
-    npm run build:production
-fi
+
+# Listar contenido de public/build para debug
+echo "📁 Contenido de public/build:"
+ls -la public/build/ || echo "❌ Directorio public/build no existe"
 
 # Verificar que el manifest existe
 if [ ! -f "public/build/manifest.json" ]; then
-    echo "❌ Error: Manifest no encontrado. Recompilando..."
-    npm run build:production
+    echo "❌ Error: Manifest no encontrado. Los archivos compilados no están presentes."
+    echo "📁 Listando archivos en public:"
+    ls -la public/
+    echo "❌ El build de Vue.js falló durante la construcción del Docker."
+    exit 1
 fi
-
-# Configurar Laravel para usar archivos de build en producción
-export APP_ENV=production
 
 echo "✅ Frontend Vue.js SPA listo"
 
