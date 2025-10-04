@@ -28,6 +28,9 @@ export SESSION_DRIVER=file
 export APP_DEBUG=true
 export LOG_LEVEL=debug
 
+# Configurar URL de API para Vite (debe coincidir con Render)
+export VITE_API_BASE_URL="${APP_URL}/api/v1"
+
 # Limpiar configuraciones
 php artisan config:clear
 php artisan route:clear

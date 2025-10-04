@@ -46,7 +46,13 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Instalar dependencias de Node.js y compilar Vue.js SPA
-RUN npm ci 
+RUN npm ci
+
+# Configurar variables de entorno para Vite durante el build
+ARG APP_URL
+ARG VITE_API_BASE_URL
+ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
+
 RUN NODE_ENV=production npm run build
 RUN echo "📁 Contenido después del build:" && ls -la public/build/ && echo "📄 Manifest:" && cat public/build/manifest.json
 

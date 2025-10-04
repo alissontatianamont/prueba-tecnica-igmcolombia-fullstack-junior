@@ -1,13 +1,28 @@
 import axios from 'axios';
 
+// Configurar base URL con fallback robusto
+const getApiBaseUrl = () => {
+  // Primero intentar variable de entorno de Vite
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+  
+  // Fallback: construir URL basada en la ubicación actual
+  const protocol = window.location.protocol;
+  const host = window.location.host;
+  return `${protocol}//${host}/api/v1`;
+};
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL ?? '/api',
+  baseURL: getApiBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
   timeout: 20000,
 });
+
+console.log('API Base URL:', api.defaults.baseURL);
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
