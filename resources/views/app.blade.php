@@ -19,13 +19,15 @@
                 $manifest = json_decode(file_get_contents($manifestPath), true);
                 $cssFile = $manifest['resources/css/app.css']['file'] ?? null;
                 $jsFile = $manifest['resources/js/app.js']['file'] ?? null;
+                // Forzar HTTPS en las URLs
+                $baseUrl = str_replace('http://', 'https://', config('app.url'));
             }
         @endphp
         @if(isset($cssFile))
-            <link rel="stylesheet" href="{{ asset('build/' . $cssFile) }}">
+            <link rel="stylesheet" href="{{ $baseUrl }}/build/{{ $cssFile }}">
         @endif
         @if(isset($jsFile))
-            <script type="module" src="{{ asset('build/' . $jsFile) }}"></script>
+            <script type="module" src="{{ $baseUrl }}/build/{{ $jsFile }}"></script>
         @endif
     @else
         @vite(['resources/css/app.css', 'resources/js/app.js'])
