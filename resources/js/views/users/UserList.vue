@@ -153,6 +153,29 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal de error informativo -->
+    <div v-if="showErrorModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
+      <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+        <div class="flex items-center mb-4">
+          <svg class="h-6 w-6 text-yellow-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+          </svg>
+          <h3 class="text-lg font-medium text-gray-900">Usuario desactivado</h3>
+        </div>
+        <p class="text-sm text-gray-500 mb-6">
+          Este usuario tiene facturas creadas y no puede ser eliminado. Ha sido desactivado en su lugar.
+        </p>
+        <div class="flex justify-end">
+          <button
+            @click="showErrorModal = false"
+            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700"
+          >
+            Entendido
+          </button>
+        </div>
+      </div>
+    </div>
   </AppLayout>
 </template>
 
@@ -178,6 +201,7 @@ export default {
     });
 
     const showDeleteModal = ref(false);
+    const showErrorModal = ref(false);
     const userToDelete = ref(null);
 
     const applyFilters = () => {
@@ -207,6 +231,16 @@ export default {
         if (result.success) {
           showDeleteModal.value = false;
           userToDelete.value = null;
+        } else {
+          // Verificar si es el error específico de usuario con facturas
+          if (result.errors && result.errors.general && 
+              result.errors.general[0] && 
+              result.errors.general[0].includes('deactivated instead of deleted')) {
+            showDeleteModal.value = false;
+            showErrorModal.value = true;
+            // Refrescar la lista para mostrar el usuario desactivado
+            fetchUsers();
+          }
         }
       }
     };
@@ -221,6 +255,7 @@ export default {
       pagination,
       filters,
       showDeleteModal,
+      showErrorModal,
       userToDelete,
       hasPermission,
       formatRoleName,
