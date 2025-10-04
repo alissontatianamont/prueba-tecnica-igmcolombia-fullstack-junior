@@ -24,9 +24,6 @@ fi
 # Configurar cache temporal para evitar errores de tabla no encontrada
 export CACHE_STORE=file
 export SESSION_DRIVER=file
-# HABILITAR DEBUG TEMPORAL PARA VER ERRORES
-export APP_DEBUG=true
-export LOG_LEVEL=debug
 
 # Configurar URL de API para Vite (debe coincidir con Render)
 export VITE_API_BASE_URL="${APP_URL}/api/v1"

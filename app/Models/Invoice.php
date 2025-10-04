@@ -40,6 +40,15 @@ class Invoice extends Model
         return $businessRuleService->isEditable($this);
     }
 
+    /**
+     * Método para verificar si la factura es editable
+     * Compatible con llamadas directas $invoice->isEditable()
+     */
+    public function isEditable(): bool
+    {
+        return $this->getIsEditableAttribute();
+    }
+
     public function client()
     {
         return $this->belongsTo(Client::class, 'inv_client_id');
